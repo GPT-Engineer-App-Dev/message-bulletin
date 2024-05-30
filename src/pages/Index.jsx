@@ -1,4 +1,5 @@
 import { Box, Container, VStack, Text, Input, Button, HStack, Flex, Heading, SimpleGrid, useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter } from "@chakra-ui/react";
+import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { usePosts, useAddPost } from "../integrations/supabase/index.js";
 
@@ -51,18 +52,24 @@ const Index = () => {
           <Text>No posts yet. Be the first to post!</Text>
         ) : (
           posts.map((post) => (
-            <Box
+            <motion.div
               key={post.id}
-              p={4}
-              shadow="md"
-              borderWidth="1px"
-              borderRadius="md"
-              _hover={{ bg: "gray.100", cursor: "pointer" }}
-              onClick={() => handlePostClick(post)}
+              initial={{ scale: 1 }}
+              whileHover={{ scale: 1.05 }}
+              transition={{ type: "spring", stiffness: 300 }}
             >
-              <Text>{post.body}</Text>
-              <Text fontSize="sm" color="gray.500">Word count: {post.word_count}</Text>
-            </Box>
+              <Box
+                p={4}
+                shadow="md"
+                borderWidth="1px"
+                borderRadius="md"
+                _hover={{ bg: "gray.100", cursor: "pointer" }}
+                onClick={() => handlePostClick(post)}
+              >
+                <Text>{post.body}</Text>
+                <Text fontSize="sm" color="gray.500">Word count: {post.word_count}</Text>
+              </Box>
+            </motion.div>
           ))
         )}
       </SimpleGrid>
