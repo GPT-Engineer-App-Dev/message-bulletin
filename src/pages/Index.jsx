@@ -12,7 +12,8 @@ const Index = () => {
   const handlePostSubmit = (e) => {
     e.preventDefault();
     if (newPost.trim() !== "") {
-      addPostMutation.mutate({ title: newPost, body: newPost });
+      const wordCount = newPost.trim().split(/\s+/).length;
+      addPostMutation.mutate({ title: newPost, body: newPost, word_count: wordCount });
       setNewPost("");
     }
   };
@@ -60,6 +61,7 @@ const Index = () => {
               onClick={() => handlePostClick(post)}
             >
               <Text>{post.body}</Text>
+              <Text fontSize="sm" color="gray.500">Word count: {post.word_count}</Text>
             </Box>
           ))
         )}
@@ -71,6 +73,7 @@ const Index = () => {
           <ModalCloseButton />
           <ModalBody>
             <Text>{selectedPost?.body}</Text>
+            <Text fontSize="sm" color="gray.500">Word count: {selectedPost?.word_count}</Text>
           </ModalBody>
           <ModalFooter>
             <Button colorScheme="blue" mr={3} onClick={onClose}>
