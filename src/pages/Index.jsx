@@ -25,7 +25,7 @@ const Index = () => {
               value={newPost}
               onChange={(e) => setNewPost(e.target.value)}
             />
-            <Button type="submit" colorScheme="blue">Post</Button>
+            <Button type="submit" colorScheme="green">Post</Button>
           </HStack>
         </Box>
         {posts.length === 0 ? (
