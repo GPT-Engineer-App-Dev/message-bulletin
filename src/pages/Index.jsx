@@ -26,7 +26,8 @@ const Index = () => {
     onOpen();
   };
 
-  const handleToggleStar = (postId) => {
+  const handleToggleStar = (e, postId) => {
+    e.stopPropagation();
     toggleStarMutation.mutate(postId);
   };
 
@@ -79,7 +80,7 @@ const Index = () => {
               >
                 <Text>{post.body}</Text>
                 <Text fontSize="sm" color="gray.500">Word count: {post.word_count}</Text>
-                <Button onClick={() => handleToggleStar(post.id)}>
+                <Button onClick={(e) => handleToggleStar(e, post.id)}>
                   {post.starred ? "Unstar" : "Star"}
                 </Button>
               </Box>
