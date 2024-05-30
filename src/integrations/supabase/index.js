@@ -35,12 +35,26 @@ export const useAddReaction = () => {
 // Hooks for Posts table
 export const usePosts = () => useQuery({
     queryKey: ['posts'],
-    queryFn: () => fromSupabase(supabase.from('posts').select('*').order('created_at', { ascending: false })),
+    queryFn: () => fromSupabase(supabase.from('posts').select('*', 'starred').order('created_at', { ascending: false })),
 });
 export const useAddPost = () => {
     const queryClient = useQueryClient();
     return useMutation({
         mutationFn: (newPost) => fromSupabase(supabase.from('posts').insert([newPost])),
+        onSuccess: () => {
+            queryClient.invalidateQueries('posts');
+        },
+    });
+};
+
+export const useToggleStar = () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: (postId) => fromSupabase(
+            supabase.from('posts')
+                .update({ starred: supabase.raw('NOT starred') })
+                .eq('id', postId)
+        ),
         onSuccess: () => {
             queryClient.invalidateQueries('posts');
         },
