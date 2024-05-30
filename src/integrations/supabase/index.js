@@ -35,7 +35,7 @@ export const useAddReaction = () => {
 // Hooks for Posts table
 export const usePosts = () => useQuery({
     queryKey: ['posts'],
-    queryFn: () => fromSupabase(supabase.from('posts').select('*')),
+    queryFn: () => fromSupabase(supabase.from('posts').select('*').order('created_at', { ascending: false })),
 });
 export const useAddPost = () => {
     const queryClient = useQueryClient();
