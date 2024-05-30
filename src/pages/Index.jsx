@@ -1,4 +1,4 @@
-import { Box, Container, VStack, Text, Input, Button, HStack, Flex, Heading } from "@chakra-ui/react";
+import { Box, Container, VStack, Text, Input, Button, HStack, Flex, Heading, SimpleGrid } from "@chakra-ui/react";
 import { useState } from "react";
 
 const Index = () => {
@@ -17,7 +17,7 @@ const Index = () => {
       <Flex justifyContent="space-between" alignItems="center" mb={6}>
         <Heading size="lg">Anna's Guest Book</Heading>
       </Flex>
-      <VStack spacing={4} align="stretch">
+      <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={4}>
         <Box as="form" onSubmit={(e) => { e.preventDefault(); handlePostSubmit(); }}>
           <HStack>
             <Input
@@ -37,7 +37,7 @@ const Index = () => {
             </Box>
           ))
         )}
-      </VStack>
+      </SimpleGrid>
     </Container>
   );
 };
