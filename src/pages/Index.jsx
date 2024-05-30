@@ -1,17 +1,42 @@
-// Update this page (the content is just a fallback if you fail and example)
-// Use chakra-ui
-import { Container, Text, VStack } from "@chakra-ui/react";
-
-// Example of using react-icons
-// import { FaRocket } from "react-icons/fa";
-// <IconButton aria-label="Add" icon={<FaRocket />} size="lg" />; // IconButton would also have to be imported from chakra
+import { Box, Container, VStack, Text, Input, Button, HStack, Flex, Heading } from "@chakra-ui/react";
+import { useState } from "react";
 
 const Index = () => {
+  const [posts, setPosts] = useState([]);
+  const [newPost, setNewPost] = useState("");
+
+  const handlePostSubmit = () => {
+    if (newPost.trim() !== "") {
+      setPosts([{ content: newPost, id: Date.now() }, ...posts]);
+      setNewPost("");
+    }
+  };
+
   return (
-    <Container centerContent maxW="container.md" height="100vh" display="flex" flexDirection="column" justifyContent="center" alignItems="center">
-      <VStack spacing={4}>
-        <Text fontSize="2xl">Your Blank Canvas</Text>
-        <Text>Chat with the agent to start making edits.</Text>
+    <Container maxW="container.lg" p={4}>
+      <Flex justifyContent="space-between" alignItems="center" mb={6}>
+        <Heading size="lg">Public Post Board</Heading>
+      </Flex>
+      <VStack spacing={4} align="stretch">
+        <Box as="form" onSubmit={(e) => { e.preventDefault(); handlePostSubmit(); }}>
+          <HStack>
+            <Input
+              placeholder="What's on your mind?"
+              value={newPost}
+              onChange={(e) => setNewPost(e.target.value)}
+            />
+            <Button type="submit" colorScheme="blue">Post</Button>
+          </HStack>
+        </Box>
+        {posts.length === 0 ? (
+          <Text>No posts yet. Be the first to post!</Text>
+        ) : (
+          posts.map((post) => (
+            <Box key={post.id} p={4} shadow="md" borderWidth="1px" borderRadius="md">
+              <Text>{post.content}</Text>
+            </Box>
+          ))
+        )}
       </VStack>
     </Container>
   );
