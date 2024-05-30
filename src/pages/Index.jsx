@@ -15,7 +15,7 @@ const Index = () => {
   return (
     <Container maxW="container.lg" p={4}>
       <Flex justifyContent="space-between" alignItems="center" mb={6}>
-        <Heading size="lg">Public Post Board</Heading>
+        <Heading size="lg">Anna's Guest Book</Heading>
       </Flex>
       <VStack spacing={4} align="stretch">
         <Box as="form" onSubmit={(e) => { e.preventDefault(); handlePostSubmit(); }}>
