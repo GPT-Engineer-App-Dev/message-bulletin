@@ -1,4 +1,4 @@
-import { Box, Container, VStack, Text, Input, Button, HStack, Flex, Heading, SimpleGrid } from "@chakra-ui/react";
+import { Box, Container, VStack, Text, Input, Button, HStack, Flex, Heading, SimpleGrid, useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import { usePosts, useAddPost } from "../integrations/supabase/index.js";
 
@@ -6,6 +6,8 @@ const Index = () => {
   const { data: posts, isLoading, error } = usePosts();
   const addPostMutation = useAddPost();
   const [newPost, setNewPost] = useState("");
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [selectedPost, setSelectedPost] = useState(null);
 
   const handlePostSubmit = (e) => {
     e.preventDefault();
@@ -13,6 +15,11 @@ const Index = () => {
       addPostMutation.mutate({ title: newPost, body: newPost });
       setNewPost("");
     }
+  };
+
+  const handlePostClick = (post) => {
+    setSelectedPost(post);
+    onOpen();
   };
 
   useEffect(() => {
@@ -43,12 +50,35 @@ const Index = () => {
           <Text>No posts yet. Be the first to post!</Text>
         ) : (
           posts.map((post) => (
-            <Box key={post.id} p={4} shadow="md" borderWidth="1px" borderRadius="md">
+            <Box
+              key={post.id}
+              p={4}
+              shadow="md"
+              borderWidth="1px"
+              borderRadius="md"
+              _hover={{ bg: "gray.100", cursor: "pointer" }}
+              onClick={() => handlePostClick(post)}
+            >
               <Text>{post.body}</Text>
             </Box>
           ))
         )}
       </SimpleGrid>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>{selectedPost?.title}</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Text>{selectedPost?.body}</Text>
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme="blue" mr={3} onClick={onClose}>
+              Close
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Container>
   );
 };
